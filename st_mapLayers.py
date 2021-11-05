@@ -97,16 +97,16 @@ st.header('Florida Energy Demand')
 
 # reading in the polygon shapefile
 florida_zips = gpd.read_file(r"data/florida-zip-code-areas.shp")
-print(florida_zips.columns)
-x_map=florida_zips.centroid.x.mean()
-y_map=florida_zips.centroid.y.mean()-.02
+st.write(florida_zips.head())
+x_map= 27.6648 # florida_zips.centroid.x.mean()
+y_map= -81.5158  # florida_zips.centroid.y.mean()-.02
 
-mymap = folium.Map(location=[y_map, x_map], zoom_start=11,tiles=None)
+mymap = folium.Map(location=[x_map, y_map], zoom_start=7,tiles=None)
 folium.TileLayer('CartoDB positron',name="Light Map",control=False).add_to(mymap)
-# folium_static(mymap)
+#folium_static(mymap)
 
 # area_stats = pd.read_csv('data/RPMSZips.csv', dtype={'zip':str})
-area_stats = pd.read_csv('florida_weather_w_zip_codes.csv', dtype={'zipcode':str})
+area_stats = pd.read_csv('florida_weather_w_zip_codes_2019_01_02.csv', dtype={'zipcode':str})
 #area_stats.rename({'zipcode':'zip_code'}, inplace = True)
 florida_zips_merged = pd.merge(florida_zips, area_stats, how='left', left_on='ZIPCODE', right_on = 'zipcode')
 
@@ -125,7 +125,7 @@ choropleth = folium.Choropleth(
  name='Choropleth',
  data=florida_zips_merged,
  columns=['ZIPCODE','pred_demand_mwh'],
- key_on="feature.properties.zip",
+ #key_on="feature.properties.zip",
 #  fill_color='YlGnBu',
     line_weight=1,
  legend_name=f'Lala population in %',
