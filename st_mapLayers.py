@@ -10,35 +10,35 @@ import base64
 
 #print(os.getcwd())
 
-# #Time series line chart of actual demand vs. predicted demand
-# df = pd.read_csv("y_test_predicted_x_actual.csv")
-# df = df.rename(columns={'utc_datetime':'index'}).set_index('index')
+#Time series line chart of actual demand vs. predicted demand
+df = pd.read_csv("y_test_predicted_x_actual.csv")
+df = df.rename(columns={'utc_datetime':'index'}).set_index('index')
 # #print(df.dtypes)
 # st.line_chart(df)
 #
-# # Drop down date selector
-# # date = st.sidebar.date_input('Date', datetime(2019,1,1))
+#Drop down date selector
+# date = st.sidebar.date_input('Date', datetime(2019,1,1))
 # # print(date)
-#
-# st.title("Date range")
 
-# min_date = datetime.datetime(2019,1,1)
-# max_date = datetime.datetime(2021,12,31)
+st.title("Date range")
 
-# a_date = st.date_input("Pick a date", min_value=min_date, max_value=max_date)
-# print(a_date)
-# #print(a_date.dtype)
-# ##this uses streamlit 'magic'!!!!
-# "The date selected:", a_date
+min_date = datetime.datetime(2019,1,1)
+max_date = datetime.datetime(2021,12,31)
+
+a_date = st.date_input("Pick a date", min_value=min_date, max_value=max_date)
+print(a_date)
+#print(a_date.dtype)
+##this uses streamlit 'magic'!!!!
+"The date selected:", a_date
 #
 #
 #
 # # Reset index to make utc_datetime a column
-# df = df.reset_index()
-# df.columns = ['date', 'Predicted_Demand', 'Actual_Demand']
-# df['date'] = pd.to_datetime(df['date'])
+df = df.reset_index()
+df.columns = ['date', 'Predicted_Demand', 'Actual_Demand']
+df['date'] = pd.to_datetime(df['date'])
 #print(df.head())
-#
+
 # #greater than the start date and smaller than the end date
 # df['date'] = pd.to_datetime(df['date'])
 # print(df.dtypes)
@@ -74,22 +74,24 @@ import base64
 # col1.metric(label = "Predicted Demand", value = find_pred_value, delta = 100)
 # col2.metric(label = "Actual Demand", value = find_actual_value, delta = 50)
 
-# col1, col2, col3 = st.columns(3)
-# col1.metric(label = "Predicted Demand", value = 2218.22412957154, delta = 100)
-# col2.metric(label = "Actual Demand", value = 1923.45833333333, delta = 50)
+col1, col2, col3 = st.columns(3)
+col1.metric(label = "Predicted Demand", value = 2218.22412957154, delta = 100)
+col2.metric(label = "Actual Demand", value = 1923.45833333333, delta = 50)
 
 
 
 # # Display dataframe on website via st.dataframe or st.write methods
 # st.write("==  scrollable dataframe after the end user has uploaded her time series file:")
 # st.dataframe(df.style.highlight_max(axis=0))
-#
-# # %%
-# # plot the time series
-# fig = px.line(df, x="date", y=["Predicted_Demand", "Actual_Demand"],
-#     title="chart: Predicted vs. Actual Energy Demand Tampa", width=1000)
-# # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-# st.plotly_chart(fig, use_container_width=False)
+
+#df = df.reset_index()
+
+# %%
+# plot the time series
+fig = px.line(df, x="date", y=["Predicted_Demand", "Actual_Demand"],
+    title="chart: Predicted vs. Actual Energy Demand Tampa", width=1000)
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+st.plotly_chart(fig, use_container_width=False)
 
 st.markdown('---')
 st.header('Florida Energy Demand')
@@ -97,7 +99,7 @@ st.header('Florida Energy Demand')
 
 # reading in the polygon shapefile
 florida_zips = gpd.read_file(r"data/florida-zip-code-areas.shp")
-st.write(florida_zips.head())
+#st.write(florida_zips.head())
 x_map= 27.6648 # florida_zips.centroid.x.mean()
 y_map= -81.5158  # florida_zips.centroid.y.mean()-.02
 
@@ -108,7 +110,7 @@ folium.TileLayer('CartoDB positron',name="Light Map",control=False).add_to(mymap
 # area_stats = pd.read_csv('data/RPMSZips.csv', dtype={'zip':str})
 area_stats = pd.read_csv('florida_weather_w_zip_codes_2019_01_02.csv', dtype={'zipcode':str})
 #area_stats.rename({'zipcode':'zip_code'}, inplace = True)
-florida_zips_merged = pd.merge(florida_zips, area_stats, how='left', left_on='ZIPCODE', right_on = 'zipcode')
+florida_zips_merged = pd.merge(florida_zips, area_stats, left_on='ZIPCODE', right_on = 'zipcode')
 
 # demos = ['White', "Black", "Latino", "Asian"]
 #
@@ -125,10 +127,10 @@ choropleth = folium.Choropleth(
  name='Choropleth',
  data=florida_zips_merged,
  columns=['ZIPCODE','pred_demand_mwh'],
- #key_on="feature.properties.zip",
-#  fill_color='YlGnBu',
+ key_on="feature.properties.ZIPCODE",
+    fill_color='YlGnBu',
     line_weight=1,
- legend_name=f'Lala population in %',
+ legend_name=f'Energy Demand by County Seat',
  smooth_factor=0
 ).add_to(mymap)
 

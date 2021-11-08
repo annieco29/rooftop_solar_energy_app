@@ -1,0 +1,5 @@
+applications:
+    - name: rooftop_solar_energy
+      path: ./  
+      random-route: true
+      memory: 2G

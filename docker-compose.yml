@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  jupyterlab:
+    image: "redis:alpine"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - JUPYTER_ENABLE_LAB=yes
+    container_name: rooftop_solar_energy
+    expose:
+      - "8888"
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./:/app
+      - jupyter_sessions:/home/jovyan/.jupyter
+    env_file: .env
+volumes:
+  jupyter_sessions:
