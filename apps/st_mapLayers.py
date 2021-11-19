@@ -69,7 +69,7 @@ def app():
      geo_data=florida_zips_merged,
      name='Choropleth',
      data=florida_zips_merged,
-     columns=['ZIPCODE','pred_demand_mwh'],
+     columns=['ZIPCODE','real_pred_demand_mwh'],
      key_on="feature.properties.ZIPCODE",
         fill_color='YlGnBu',
         line_weight=1,
