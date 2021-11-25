@@ -2,9 +2,9 @@ FROM python:3.7
 
 #RUN apt-get update && apt-get upgrade -y
 RUN apt-get update &&\
-    apt-get install python3.7 -y &&\
+    # apt-get install python3.7 -y &&\
     apt-get install libpcap-dev libpq-dev -y &&\
-    apt-get install python3.7-dev libmysqlclient-dev -y &&\
+    # apt-get install python3.7-dev libmysqlclient-dev -y &&\
     apt-get install python3-pip -y &&\
     apt-get install graphviz -y
 

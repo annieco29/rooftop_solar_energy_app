@@ -2,11 +2,9 @@ import streamlit as st
 import pandas as pd
 import datetime
 import plotly.express as px
-from streamlit_folium import folium_static
 import folium
+from streamlit_folium import folium_static
 import geopandas as gpd
-import re
-import base64
 import plotly.express as px
 
 def app():

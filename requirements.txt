@@ -1,9 +1,9 @@
 numpy
 pandas
 datetime
+streamlit
 folium
 geopandas
 plotly
-streamlit
-streamlit_folium
+streamlit-folium
 
