@@ -54,8 +54,8 @@ def app():
     st.markdown("""
     * Renewables currently account for roughly only 4% of energy production in Florida.
     * Policy makers need to know how solar energy sources can supplement the power grid.
-    * The map below shows the percentage of energy demand that could be covered by solar energy.
-    * The forecast uses predictive modeling to predict the rooftop solar energy potential and the energy demand based on the weather.
+    * The calendar wheel below shows the daily potential of energy demand that could be covered by rooftop solar energy for 2019.
+    * This projection for 2019 is based on predictive modeling that predicts the rooftop solar energy potential and the energy demand based on the weather.
     """)
 
     # area_stats = pd.read_csv('data/RPMSZips.csv', dtype={'zip':str})
@@ -87,11 +87,13 @@ def app():
 
     #get name of month for sunburst chart
     area_stats['month'] = area_stats['date_time'].dt.strftime("%B")
+    area_stats['word_date'] = area_stats['date_time'].dt.strftime("%B %e, %Y")
 
     # st.write(area_stats['percentage_demand_covered'].dtype)
-    fig = px.sunburst(area_stats, path=['month','date_time'], values= 'percentage_demand_covered',
+    fig = px.sunburst(area_stats, path=['month','word_date'], values= 'percentage_demand_covered',
                       color='percentage_demand_covered',
                       color_continuous_scale='RdBu')
-    fig.update_layout(title='Click various months to view power demand')
+    fig.update_layout(coloraxis_colorbar_title='Rooftop Solar Energy Potential')
+    fig.update_layout(title='Click various months to view percentage of demand fulfilled by solar potential')
     fig.update_layout(width=800, height=600)
     st.plotly_chart(fig)
