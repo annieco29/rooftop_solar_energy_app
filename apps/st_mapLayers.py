@@ -52,8 +52,8 @@ def app():
 
     st.markdown("""
     * Policy makers need to know how solar energy sources can supplement the power grid.
-    * The map below shows the percentage of energy demand that could be covered by solar energy.
-    * The forecast uses predictive modeling to predict the rooftop solar energy potential and the energy demand based on the weather.
+    * The map below shows the percentage of energy demand that could have been produced by rooftop solar energy.
+    * This projection for 2019 is based on predictive modeling that predicts the rooftop solar energy potential and the energy demand based on the weather.
     """)
 
     # area_stats = pd.read_csv('data/RPMSZips.csv', dtype={'zip':str})

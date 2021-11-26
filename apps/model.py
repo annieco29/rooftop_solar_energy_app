@@ -65,3 +65,9 @@ def app():
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     st.plotly_chart(fig, use_container_width=False)
 
+    st.text("Our linear regression model that predicts solar rooftop potential for Florida uses weather data (temperature," "\n" 
+            "pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)" "\n"
+            "from the National Solar Radiation Database to predict the daily rooftop solar potential. The model" "\n"
+            "predicts solar production for a 250 mwh capacity solar panel."
+            )
+
