@@ -1,6 +1,7 @@
 numpy
 pandas
 datetime
+calendar
 streamlit
 folium
 geopandas

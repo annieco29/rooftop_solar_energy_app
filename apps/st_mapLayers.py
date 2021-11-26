@@ -6,8 +6,42 @@ import folium
 from streamlit_folium import folium_static
 import geopandas as gpd
 import plotly.express as px
+import base64
 
 def app():
+    LOGO_IMAGE_IBM = "apps/ibm.png"
+    LOGO_IMAGE_U_OF_F = "apps/u_of_f.svg.png"
+
+    st.markdown(
+        """
+        <style>
+        .container {
+            display: flex;
+        }
+        .logo-text {
+            font-weight:700 !important;
+            font-size:50px !important;
+            color: #f9a01b !important;
+            padding-top: 75px !important;
+        }
+        .logo-img {
+            float:right;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"""
+        <div class="container">
+            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="150" height="40">
+            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
     #title
     st.markdown('---')
     st.title("Predicting Florida's Solar Energy Potential")
@@ -15,11 +49,6 @@ def app():
     #Drop down date selector
     selected_date = st.sidebar.date_input('Date', datetime.datetime(2019,1,2))
     selected_date= selected_date.strftime('%m/%d/%y')
-
-    min_date = st.sidebar.date_input('Min Date', datetime.datetime(2019,1,2))
-    min_date= min_date.strftime('%m/%d/%y')
-    max_date = st.sidebar.date_input('Max Date', datetime.datetime(2019,12,31))
-    max_date= max_date.strftime('%m/%d/%y')
 
     st.markdown("""
     * Policy makers need to know how solar energy sources can supplement the power grid.
@@ -40,24 +69,6 @@ def app():
     df_daily_masked = df_daily_masked.reset_index()
     #st.write('df_daily_masked shape = ')
     #st.write(df_daily_masked.shape)
-
-    # create a dataframe that gets masked based on min and max date selectors
-    area_stats['date_time'] = pd.to_datetime(area_stats['date_time'])
-    #print(area_stats.dtypes)
-    daily_mask = ((area_stats['date_time'] >= min_date) & (area_stats['date_time'] <= max_date))
-    df_masked = area_stats.loc[daily_mask]
-    change_details = df_masked[['date_time','zipcode','real_pred_demand_mwh','percentage_demand_covered']].copy()
-    change_details['date_time'] = change_details['date_time'].dt.strftime('%m/%d/%Y')
-    #st.write('df_masked shape = ')
-    #st.write(change_details.shape)
-
-    # get
-    predicted_demand = change_details['real_pred_demand_mwh'].sum()
-    #predicted_solar = df_masked['solar_pred_mwh'].sum()
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="Predicted Demand", value=predicted_demand, delta=100)
-    col2.metric(label = "Solar Rooftop Potential", value = 1923.45833333333, delta = 50)
 
     # # Display dataframe on website via st.dataframe or st.write methods
     # st.write("==  scrollable dataframe after the end user has uploaded her time series file:")
@@ -122,15 +133,6 @@ def app():
     folium.LayerControl().add_to(mymap)
 
     folium_static(mymap, width=750, height=850)
-
-
-    st.write(area_stats['real_pred_demand_mwh'].dtype)
-    fig = px.sunburst(area_stats, path=['date_time'], values='real_pred_demand_mwh',
-                      color='real_pred_demand_mwh',
-                      color_continuous_scale='RdBu')
-    fig.update_layout(title='Click various months to view power demand')
-    fig.update_layout(width=800, height=600)
-    st.plotly_chart(fig)
 
 
 
