@@ -4,7 +4,6 @@ import numpy as np
 import datetime
 import plotly.express as px
 import base64
-import calendar
 
 def app():
     LOGO_IMAGE_IBM = "apps/ibm.png"
