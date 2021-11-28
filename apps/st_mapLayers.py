@@ -8,6 +8,7 @@ import geopandas as gpd
 import plotly.express as px
 import base64
 from folium.plugins import MarkerCluster
+import branca
 
 def app():
     LOGO_IMAGE_IBM = "apps/ibm.png"
@@ -133,10 +134,20 @@ def app():
     # add points for student locations
     if view_real_estate:
         industrial_locations = pd.read_csv('apps/florida_industrial_lat_long.csv')
-        locationlist = industrial_locations.values.tolist()
-        marker_cluster = MarkerCluster().add_to(mymap)
-        for point in range(0, len(locationlist)):
-            folium.Marker(locationlist[point]).add_to(marker_cluster)
+
+        #industrial_owners = pd.read_csv('apps/industrial_solar.csv')
+        lat = industrial_locations['lat'].tolist()
+        lon = industrial_locations['long'].tolist()
+        name = industrial_locations['reported_owner'].tolist()
+        pred = industrial_locations['solar_prod_mw'].tolist()
+
+        #st.write(industrial_locations.columns)
+
+        for lt,ln,nm,pr in zip(lat,lon,name,pred):
+            test = folium.Html(f'<b>Owner: {nm}<br>Daily Solar Production: {pr}</b>', script=True)  # i'm assuming this bit runs fine
+            iframe = branca.element.IFrame(html=test, width=200, height=90)
+            popup = folium.Popup(iframe, parse_html=True)
+            folium.Marker(location=[lt, ln], radius=6, color='grey', fill_color='yellow', popup=popup).add_to(mymap)
 
     # add labels indicating the name of the community
     style_function = "font-size: 15px; font-weight: bold"
