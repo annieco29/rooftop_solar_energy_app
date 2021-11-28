@@ -7,6 +7,7 @@ from streamlit_folium import folium_static
 import geopandas as gpd
 import plotly.express as px
 import base64
+from folium.plugins import MarkerCluster
 
 def app():
     LOGO_IMAGE_IBM = "apps/ibm.png"
@@ -46,9 +47,17 @@ def app():
     st.markdown('---')
     st.title("Predicting Florida's Solar Energy Potential")
 
-    #Drop down date selector
-    selected_date = st.sidebar.date_input('Date', datetime.datetime(2019,1,2))
-    selected_date= selected_date.strftime('%m/%d/%y')
+    st.sidebar.header('Choose month to view:')
+    # Declare zipcode list
+    month = ['January','February','March','April','May','June','July',
+             'August','September','October','November','December']
+
+    # Put client and date options in the sidebar
+    selected_month = st.sidebar.selectbox(
+        'Choose month:',
+        month,
+        key='month'
+    )
 
     st.markdown("""
     * Policy makers need to know how solar energy sources can supplement the power grid.
@@ -60,22 +69,26 @@ def app():
     area_stats = pd.read_csv('apps/florida_weather_w_predictions_and_zip_codes.csv', dtype={'zipcode':str})
     #st.write(area_stats.head())
 
-    # create a dataframe that gets masked based on a daily date selector
+    #get name of month for sunburst chart
     area_stats['date_time'] = pd.to_datetime(area_stats['date_time'])
+    area_stats['month'] = area_stats['date_time'].dt.strftime("%B")
+    area_stats_sub = area_stats[['zipcode','month','solar_prod_mwh','real_pred_demand_mwh','percentage_demand_covered']]
+    df_groupby_month = area_stats_sub.groupby(['zipcode','month']).mean()
+    df_groupby_month = df_groupby_month.reset_index()
+
+    # create a dataframe that gets masked based on a daily date selector
     #print(area_stats.dtypes)
-    daily_mask = (area_stats['date_time'] == selected_date)
-    df_daily_masked = area_stats.loc[daily_mask]
-    df_daily_masked['date_time'] = df_daily_masked['date_time'].dt.strftime('%m/%d/%Y')
-    df_daily_masked = df_daily_masked.reset_index()
-    #st.write('df_daily_masked shape = ')
-    #st.write(df_daily_masked.shape)
+    monthly_mask = (df_groupby_month['month'] == selected_month)
+    df_monthly_masked = df_groupby_month.loc[monthly_mask]
+    # st.write('df_monthly_masked shape = ')
+    # st.write(df_monthly_masked.shape)
 
     # # Display dataframe on website via st.dataframe or st.write methods
     # st.write("==  scrollable dataframe after the end user has uploaded her time series file:")
     # st.dataframe(df.style.highlight_max(axis=0))
 
     st.markdown('---')
-    st.header('Florida Energy Demand by County Seat')
+    st.header('Florida Rooftop Solar Potential by County Seat')
     # view neighborhood, city by income, different groups, stats
 
     # reading in the polygon shapefile
@@ -90,14 +103,15 @@ def app():
     #folium_static(mymap)
 
     #st.write(change_details.str[:2])
-    df_daily_masked['zipcode'] = df_daily_masked['zipcode'].str[:5]
+    df_monthly_masked['zipcode'] = df_monthly_masked['zipcode'].str[:5]
     #st.write(change_details['zipcode'].head())
     # change_details.rename(columns = {'zipcode':'zip_code'}, inplace= True)
-    florida_zips_merged = pd.merge(florida_zips, df_daily_masked, left_on='ZIPCODE', right_on='zipcode')
+    florida_zips_merged = pd.merge(florida_zips, df_monthly_masked, left_on='ZIPCODE', right_on='zipcode')
+    florida_zips_merged['percentage_demand_covered'] = florida_zips_merged['percentage_demand_covered'] * 100
 
     #st.subheader(f'{demo} population in %')
 
-    #view_students = st.checkbox('View Student Locations')
+    view_real_estate = st.checkbox('View Industrial Locations')
 
     choropleth = folium.Choropleth(
      geo_data=florida_zips_merged,
@@ -105,29 +119,29 @@ def app():
      data=florida_zips_merged,
      columns=['ZIPCODE','percentage_demand_covered'],
      key_on="feature.properties.ZIPCODE",
-        fill_color='YlGnBu',
+        fill_color='YlOrRd',
         line_weight=1,
      legend_name=f'Percentage Energy Demand Covered by Solar',
      smooth_factor=0
     ).add_to(mymap)
 
-    # # add point for RPMS
-    # cluster = MarkerCluster().add_to(mymap)
-    # style_function = "font-size: 15px; font-weight: bold"
-    # folium.Marker(location=[41.980250,-87.675000], tooltip = "<h3>RPMS</h3>", popup = 'RPMS', style=style_function).add_to(cluster)
-    #
-    # # add points for student locations
-    # if view_students:
-    #     student_locations = pd.read_csv('data/student_locations.csv')
-    #     locationlist = student_locations.values.tolist()
-    #     marker_cluster = MarkerCluster().add_to(mymap)
-    #     for point in range(0, len(locationlist)):
-    #         folium.Marker(locationlist[point]).add_to(marker_cluster)
-    #
-    # # add labels indicating the name of the community
-    # style_function = "font-size: 15px; font-weight: bold"
-    # choropleth.geojson.add_child(
-    #     folium.features.GeoJsonTooltip(['zip'], style=style_function, labels=False))
+    # add points for industrial real estate sites greater than 750,000 sqft
+    cluster = MarkerCluster().add_to(mymap)
+    style_function = "font-size: 15px; font-weight: bold"
+    #folium.Marker(location=[41.980250,-87.675000], tooltip = "<h3>RPMS</h3>", popup = 'RPMS', style=style_function).add_to(cluster)
+
+    # add points for student locations
+    if view_real_estate:
+        industrial_locations = pd.read_csv('apps/florida_industrial_lat_long.csv')
+        locationlist = industrial_locations.values.tolist()
+        marker_cluster = MarkerCluster().add_to(mymap)
+        for point in range(0, len(locationlist)):
+            folium.Marker(locationlist[point]).add_to(marker_cluster)
+
+    # add labels indicating the name of the community
+    style_function = "font-size: 15px; font-weight: bold"
+    choropleth.geojson.add_child(
+        folium.features.GeoJsonTooltip(['zipcode'], style=style_function, labels=False))
 
     # create a layer control
     folium.LayerControl().add_to(mymap)

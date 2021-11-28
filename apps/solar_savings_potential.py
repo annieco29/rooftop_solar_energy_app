@@ -39,16 +39,17 @@ def app():
         unsafe_allow_html=True
     )
     st.markdown('---')
-    st.header("Modeling Energy Demand")
+    st.header("Solar Rooftop Potential Prediction")
 
+    # Sidebar
+    st.sidebar.header('Choose Time Range to View:')
     min_date = st.sidebar.date_input('Min Date', datetime.datetime(2019, 1, 1))
     min_date = min_date.strftime('%m/%d/%y')
     max_date = st.sidebar.date_input('Max Date', datetime.datetime(2019, 12, 31))
     max_date = max_date.strftime('%m/%d/%y')
 
-    # Sidebar
     st.sidebar.header('Choose Zipcode to View:')
-    # Declare client list
+    # Declare zipcode list
     zipcodes = [33040, 33131,34112,33916,33407,33935,33471,33950,
     34266,34994,34972,34236,34950,34205,33873,32960,33830,33606,33755,34741,33525,32806,34601,
     32796,33513,32778,32771,34453,32720,34471,32621,32110,32601,32177,32456,32080,32091,32054,
@@ -94,7 +95,7 @@ def app():
 
     # create a dataframe that gets masked based on min and max date selectors
     area_stats['date_time'] = pd.to_datetime(area_stats['date_time'])
-    #print(area_stats.dtypes)
+    selected_zip = str(selected_zip)
     daily_mask = ((area_stats['date_time'] >= min_date) & (area_stats['date_time'] <= max_date) & (area_stats['zipcode']== selected_zip))
     df_masked = area_stats.loc[daily_mask]
     change_details = df_masked[['date_time','zipcode','real_pred_demand_mwh','solar_prod_mwh','percentage_demand_covered']].copy()
@@ -119,10 +120,21 @@ def app():
     area_stats['month'] = area_stats['date_time'].dt.strftime("%B")
     area_stats['word_date'] = area_stats['date_time'].dt.strftime("%B %e, %Y")
 
+    # create a dataframe that gets masked based on zipcode
+    selected_zip = str(selected_zip)
+    zip_mask = (area_stats['zipcode']== selected_zip)
+    df_zip_masked = area_stats.loc[zip_mask]
+    change_details_zip = df_zip_masked[['date_time','month','word_date','zipcode','real_pred_demand_mwh','solar_prod_mwh','percentage_demand_covered']].copy()
+    #st.write('df_masked shape = ')
+    #st.write(change_details.shape)
+
+    #sunburst chart label dictionary
+    label_dict = {'Percent Demand Covered': 'percentage_demand_covered','Month': 'month', 'Date':'word_date'}
+
     # st.write(area_stats['percentage_demand_covered'].dtype)
-    fig = px.sunburst(area_stats, path=['month','word_date'], values= 'percentage_demand_covered',
+    fig = px.sunburst(change_details_zip, path=['month','word_date'], values= 'percentage_demand_covered',
                       color='percentage_demand_covered',
-                      color_continuous_scale='RdBu')
+                      color_continuous_scale='ylorrd')
     fig.update_layout(coloraxis_colorbar_title='Rooftop Solar Energy Potential')
     fig.update_layout(title='Click various months to view percentage of demand fulfilled by solar potential')
     fig.update_layout(width=800, height=600)
