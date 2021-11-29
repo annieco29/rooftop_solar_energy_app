@@ -8,6 +8,7 @@ import base64
 def app():
     LOGO_IMAGE_IBM = "apps/ibm.png"
     LOGO_IMAGE_U_OF_F = "apps/u_of_f.svg.png"
+    LOGO_IMAGE_BRIGHTER = "apps/brighter_potential_logo.png"
 
     st.markdown(
         """
@@ -32,8 +33,10 @@ def app():
     st.markdown(
         f"""
             <div class="container">
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="150" height="40">
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40">
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="150" height="40" style="border:20px;margin:0px" />
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40" style="border:20px;margin:0px"/>
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_BRIGHTER, "rb").read()).decode()}" width="100" height="100" />
+
             </div>
             """,
         unsafe_allow_html=True
