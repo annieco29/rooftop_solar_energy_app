@@ -23,7 +23,13 @@ def app():
             padding-top: 75px !important;
         }
         .logo-img {
-            float:right;
+            float: left;
+            position: relative;
+            margin-top: 600px;
+        }
+        #logo {
+        position: absolute;
+           float: right;
         }
         </style>
         """,
@@ -32,12 +38,15 @@ def app():
 
     st.markdown(
         f"""
-            <div class="container">
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="150" height="40" style="border:20px;margin:0px" />
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40" style="border:20px;margin:0px"/>
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_BRIGHTER, "rb").read()).decode()}" width="100" height="100" />
 
-            </div>
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="100x`" height="40" style="border:20px;margin:0px" />
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40" style="border:20px;margin:0px"/>
+                &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+
+                <img class="logo" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_BRIGHTER, "rb").read()).decode()}" width="100" height="100" />
+
+
             """,
         unsafe_allow_html=True
     )
@@ -100,6 +109,21 @@ def app():
     area_stats = pd.read_csv('apps/florida_weather_w_predictions_and_zip_codes.csv', dtype={'zipcode':str})
     #st.write(area_stats.head())
 
+    st.markdown("""Energy Demand vs. Solar Production Potential for 62 most populated Florida zip codes for all of 2019:""")
+
+    # get f'{value:,}'
+    florida_predicted_demand = round(area_stats['real_pred_demand_mwh'].sum())
+    florida_predicted_solar = round(area_stats['solar_prod_mwh'].sum())
+
+    col1, col2 = st.columns(2)
+    col1.metric(label="Predicted Demand (mwh)", value=f'{florida_predicted_demand:,}'
+                #, delta=100
+                )
+    col2.metric(label = "Solar Rooftop Potential (mwh)", value = f'{florida_predicted_solar:,}',
+                #delta = 50
+                )
+
+
     # create a dataframe that gets masked based on min and max date selectors
     area_stats['date_time'] = pd.to_datetime(area_stats['date_time'])
     selected_zip = str(selected_zip)
@@ -110,18 +134,21 @@ def app():
     #st.write('df_masked shape = ')
     #st.write(change_details.shape)
 
+    st.write("---")
+
+    st.markdown("""Energy Demand vs. Solar Production Potential for Selected Zip Code:""")
+
     # get f'{value:,}'
     predicted_demand = round(change_details['real_pred_demand_mwh'].sum())
     predicted_solar = round(change_details['solar_prod_mwh'].sum())
 
-    col1, col2, col3 = st.columns(3)
-    col1.metric(label="Predicted Demand (mwh)", value=f'{predicted_demand:,}'
+    col1, col2= st.columns(2)
+    col1.metric(label="Predicted Demand (mwh) for " f'{selected_zip}', value=f'{predicted_demand:,}'
                 #, delta=100
                 )
-    col2.metric(label = "Solar Rooftop Potential (mwh)", value = f'{predicted_solar:,}',
+    col2.metric(label = "Solar Rooftop Potential (mwh) for " f'{selected_zip}', value = f'{predicted_solar:,}',
                 #delta = 50
                 )
-    #col3.metric(label = "Cost Savings Potential", value = f'{predicted_solar:,)
 
     #get name of month for sunburst chart
     area_stats['month'] = area_stats['date_time'].dt.strftime("%B")
@@ -147,6 +174,7 @@ def app():
     fig.update_layout(width=800, height=600)
 
     #format label
-    fig.update_traces(customdata =change_details_zip['percentage_demand_covered'], hovertemplate='%{label}<br>%{customdata}')
+    fig.update_traces(hovertemplate='<b>%{label} </b> <br>%{customdata[0]:,.3f}')
+
     # write to streamlit
     st.plotly_chart(fig)

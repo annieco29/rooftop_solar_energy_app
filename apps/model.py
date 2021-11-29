@@ -9,7 +9,7 @@ def app():
     LOGO_IMAGE_IBM = "apps/ibm.png"
     LOGO_IMAGE_U_OF_F = "apps/u_of_f.svg.png"
     LOGO_IMAGE_BRIGHTER = "apps/brighter_potential_logo.png"
-
+    
     st.markdown(
         """
         <style>
@@ -23,7 +23,13 @@ def app():
             padding-top: 75px !important;
         }
         .logo-img {
-            float:right;
+            float: left;
+            position: relative;
+            margin-top: 600px;
+        }
+        #logo {
+        position: absolute;
+           float: right;
         }
         </style>
         """,
@@ -32,24 +38,21 @@ def app():
 
     st.markdown(
         f"""
-            <div class="container">
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="150" height="40" style="border:20px;margin:0px" />
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40" style="border:20px;margin:0px"/>
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_BRIGHTER, "rb").read()).decode()}" width="100" height="100" />
 
-            </div>
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="100x`" height="40" style="border:20px;margin:0px" />
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40" style="border:20px;margin:0px"/>
+                &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+
+                <img class="logo" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_BRIGHTER, "rb").read()).decode()}" width="100" height="100" />
+
+
             """,
         unsafe_allow_html=True
     )
     st.markdown('---')
-    st.header("Modeling Energy Demand")
+    st.header("Predictive Modeling Methodology")
 
-    # st.text("Our XGBoost model that predicts energy demand for all of Florida uses weather data (temperature," "\n"
-    #         "pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)" "\n"
-    #         "from the National Solar Radiation Database to predict the daily energy demand for the" "\n"
-    #         "Tampa area. We used energy demand data from Tampa Electric Co. as a target output for the model" "\n"
-    #         "from the PUDL project."
-    #         )
     st.markdown("""
             "Our XGBoost model that predicts energy demand for all of Florida uses weather data (temperature, 
             pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)
@@ -71,15 +74,9 @@ def app():
 
     # plot the time series
     fig = px.line(df, x="date", y=["Predicted_Demand", "Actual_Demand"],
-        title="Predicted vs. Actual Energy Demand based on xgboost model", width=750)
+        title="Predicted vs. actual energy demand based on xgboost model", width=750)
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     st.plotly_chart(fig, use_container_width=False)
-
-    # st.text("Our linear regression model that predicts solar rooftop potential for Florida uses weather data (temperature," "\n"
-    #         "pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)" "\n"
-    #         "from the National Solar Radiation Database to predict the daily rooftop solar potential. The model" "\n"
-    #         "predicts solar production for a 250 mwh capacity solar panel."
-    #         )
 
     st.markdown("""
             Our linear regression model that predicts solar rooftop potential for Florida uses weather data (temperature, 
