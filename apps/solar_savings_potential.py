@@ -5,41 +5,43 @@ import datetime
 import plotly.express as px
 import base64
 
-LOGO_IMAGE_IBM = "apps/ibm.png"
-LOGO_IMAGE_U_OF_F = "apps/u_of_f.svg.png"
-LOGO_IMAGE_BRIGHTER = "apps/brighter_potential_logo.png"
+def app():
+    LOGO_IMAGE_IBM = "apps/ibm.png"
+    LOGO_IMAGE_U_OF_F = "apps/u_of_f.svg.png"
+    LOGO_IMAGE_BRIGHTER = "apps/brighter_potential_logo.png"
 
-st.markdown(
-    """
-    <style>
-    .container {
-        display: flex;
-    }
-    .logo-text {
-        font-weight:700 !important;
-        font-size:50px !important;
-        color: #f9a01b !important;
-        padding-top: 75px !important;
-    }
-    .logo-img {
-        float:right;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    f"""
-        <div class="container">
-            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="150" height="40" style="border:20px;margin:0px" />
-            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40" style="border:20px;margin:0px"/>
-            <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_BRIGHTER, "rb").read()).decode()}" width="100" height="100" />
-
-        </div>
+    st.markdown(
+        """
+        <style>
+        .container {
+            display: flex;
+        }
+        .logo-text {
+            font-weight:700 !important;
+            font-size:50px !important;
+            color: #f9a01b !important;
+            padding-top: 75px !important;
+        }
+        .logo-img {
+            float:right;
+        }
+        </style>
         """,
-    unsafe_allow_html=True
-)
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"""
+            <div class="container">
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_IBM, "rb").read()).decode()}" width="150" height="40" style="border:20px;margin:0px" />
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_U_OF_F, "rb").read()).decode()}" width="200" height="40" style="border:20px;margin:0px"/>
+                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE_BRIGHTER, "rb").read()).decode()}" width="100" height="100" />
+
+            </div>
+            """,
+        unsafe_allow_html=True
+    )
+
     st.markdown('---')
     st.header("Solar Rooftop Potential Prediction")
 
@@ -89,9 +91,9 @@ st.markdown(
 
     st.markdown("""
     * Renewables currently account for roughly only 4% of energy production in Florida.
-    * Policy makers need to know how solar energy sources can supplement the power grid.
-    * The calendar wheel below shows the daily potential of energy demand that could be covered by rooftop solar energy for 2019.
-    * This projection for 2019 is based on predictive modeling that predicts the rooftop solar energy potential and the energy demand based on the weather.
+    * Stakeholders need to know how solar energy sources can supplement the power grid.
+    * The sunburst chart below shows the daily potential of energy demand that could be supplied by rooftop solar energy for 2019.
+    * This projection for 2019 is based on predictive modeling that predicts the daily rooftop solar energy potential and the energy demand based on the weather.
     """)
 
     # area_stats = pd.read_csv('data/RPMSZips.csv', dtype={'zip':str})

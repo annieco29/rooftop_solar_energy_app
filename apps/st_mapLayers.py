@@ -64,7 +64,8 @@ def app():
     )
 
     st.markdown("""
-    * Policy makers need to know how solar energy sources can supplement the power grid.
+    * Renewables currently account for roughly only 4% of energy production in Florida.
+    * Stakeholders need to know how solar energy sources can supplement the power grid.
     * The map below shows the percentage of energy demand that could have been produced by rooftop solar energy.
     * This projection for 2019 is based on predictive modeling that predicts the rooftop solar energy potential and the energy demand based on the weather.
     """)
