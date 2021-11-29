@@ -41,12 +41,19 @@ def app():
     st.markdown('---')
     st.header("Modeling Energy Demand")
 
-    st.text("Our XGBoost model that predicts energy demand for all of Florida uses weather data (temperature," "\n" 
-            "pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)" "\n"
-            "from the National Solar Radiation Database to predict the daily energy demand for the" "\n"
-            "Tampa area. We used energy demand data from Tampa Electric Co. as a target output for the model" "\n"
-            "from the PUDL project."
-            )
+    # st.text("Our XGBoost model that predicts energy demand for all of Florida uses weather data (temperature," "\n"
+    #         "pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)" "\n"
+    #         "from the National Solar Radiation Database to predict the daily energy demand for the" "\n"
+    #         "Tampa area. We used energy demand data from Tampa Electric Co. as a target output for the model" "\n"
+    #         "from the PUDL project."
+    #         )
+    st.markdown("""
+            "Our XGBoost model that predicts energy demand for all of Florida uses weather data (temperature, 
+            pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)
+            from the National Solar Radiation Database to predict the daily energy demand for the
+            Tampa area. We used energy demand data from Tampa Electric Co. as a target output for the model
+            from the PUDL project.
+            """)
 
 
     #Time series line chart of actual demand vs. predicted demand
@@ -61,13 +68,34 @@ def app():
 
     # plot the time series
     fig = px.line(df, x="date", y=["Predicted_Demand", "Actual_Demand"],
-        title="Predicted vs. Actual Energy Demand Tampa based on a linear regression model", width=1000)
+        title="Predicted vs. Actual Energy Demand based on xgboost model", width=750)
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     st.plotly_chart(fig, use_container_width=False)
 
-    st.text("Our linear regression model that predicts solar rooftop potential for Florida uses weather data (temperature," "\n" 
-            "pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)" "\n"
-            "from the National Solar Radiation Database to predict the daily rooftop solar potential. The model" "\n"
-            "predicts solar production for a 250 mwh capacity solar panel."
-            )
+    # st.text("Our linear regression model that predicts solar rooftop potential for Florida uses weather data (temperature," "\n"
+    #         "pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)" "\n"
+    #         "from the National Solar Radiation Database to predict the daily rooftop solar potential. The model" "\n"
+    #         "predicts solar production for a 250 mwh capacity solar panel."
+    #         )
 
+    st.markdown("""
+            Our linear regression model that predicts solar rooftop potential for Florida uses weather data (temperature, 
+            pressure, DHI, DNI, surface albedo, wind speed, relative humidity, and dew point)
+            from the National Solar Radiation Database to predict the daily rooftop solar potential. The model
+            predicts solar production for a 250 mwh capacity solar panel.
+            """)
+    #Time series line chart of actual solar production vs. predicted solar production
+    df_solar = pd.read_csv("solar_predictions.csv")
+    #df = df.rename(columns={'utc_datetime':'date'})
+    df_solar = df_solar[['date','Predicted_Output','Solar_Output_by_Panel']]
+
+    # # Reset index to make utc_datetime a column
+    df_solar.columns = ['date', 'Predicted Output', 'Actual Output by Panel']
+    df_solar['date'] = pd.to_datetime(df_solar['date'])
+
+
+    # plot the time series
+    fig_1 = px.line(df_solar, x="date", y=["Predicted Output", "Actual Output by Panel"],
+        title="Predicted vs. Actual solar energy output by panel based on a linear regression model", width=750)
+    # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    st.plotly_chart(fig_1, use_container_width=False)
