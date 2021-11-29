@@ -50,7 +50,7 @@ def app():
 
     st.sidebar.header('Choose Zipcode to View:')
     # Declare zipcode list
-    zipcodes = [33040, 33131,34112,33916,33407,33935,33471,33950,
+    zipcodes = [33131,33040,34112,33916,33407,33935,33471,33950,
     34266,34994,34972,34236,34950,34205,33873,32960,33830,33606,33755,34741,33525,32806,34601,
     32796,33513,32778,32771,34453,32720,34471,32621,32110,32601,32177,32456,32080,32091,32054,
     32066,32347,32401,32327,
@@ -137,8 +137,12 @@ def app():
     # st.write(area_stats['percentage_demand_covered'].dtype)
     fig = px.sunburst(change_details_zip, path=['month','word_date'], values= 'percentage_demand_covered',
                       color='percentage_demand_covered',
-                      color_continuous_scale='ylorrd')
+                      color_continuous_scale='RdBu')
     fig.update_layout(coloraxis_colorbar_title='Rooftop Solar Energy Potential')
     fig.update_layout(title='Click various months to view percentage of demand fulfilled by solar potential')
     fig.update_layout(width=800, height=600)
+
+    #format label
+    fig.update_traces(customdata =change_details_zip['percentage_demand_covered'], hovertemplate='%{label}<br>%{customdata}')
+    # write to streamlit
     st.plotly_chart(fig)
