@@ -9,7 +9,7 @@ def app():
     LOGO_IMAGE_IBM = "apps/ibm.png"
     LOGO_IMAGE_U_OF_F = "apps/u_of_f.svg.png"
     LOGO_IMAGE_BRIGHTER = "apps/brighter_potential_logo.png"
-    
+
     st.markdown(
         """
         <style>
