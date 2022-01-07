@@ -83,7 +83,7 @@ MAPPING PRODUCTION POTENTIAL VS. DEMAND
 * This prediction could be used for stakeholders to maximize their marketing to consumers in certain regions.
 
 <a href="https://github.com/annieco29/rooftop_solar_energy_app">
-    <img src="front_end/brighter_potential_logo.png" alt="Logo" width="80" height="80">
+    <img src="front_end/measuring_production.png" alt="pic1" width="300" height="300">
   </a>
 
 
@@ -149,26 +149,21 @@ This is a list of libraries you need to spin up the Streamlit dashboard and how 
   pip install ploty
   ```
 
-### Installation
+<!-- ### Installation
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/annieco29/rooftop_solar_energy_app.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+2. From your commmand line, run the following:
+   ```she
+   streamlit run app.py
    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
+ -->
 
 
 <!-- USAGE EXAMPLES -->
@@ -201,7 +196,7 @@ Project Link: [https://github.com/annieco29/rooftop_solar_energy_app](https://gi
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-
+TBC
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
