@@ -36,11 +36,8 @@
     <a href="https://github.com/annieco29/rooftop_solar_energy_app"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-***    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-***    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-***    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+<a href="http://169.51.195.94:32588/">View Demo</a>
+
   </p>
 </div>
 
@@ -77,18 +74,35 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+MAPPING PRODUCTION POTENTIAL VS. DEMAND
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+* On the first tab, The choropleth map displays a prediction of the percentage of energy demand that could be supplied by solar energy if the total rooftop solar capacity were utilized 
+* This prediction is created using an xgboost and a regression model that predict daily energy demand and daily rooftop solar energy, respectively, using weather data from 2019 as inputs. (we used available weather data from 2019, but predictions could be made in real time based on data availability) 
+* The daily rooftop solar energy prediction additionally uses building rooftop capacity data by zipcode to project the approximate number of solar panels that could be added by zip code. 
+* Here on the map we have aggregated the daily predictions to monthly capacity, with a month selector along the side.
+* This prediction could be used for stakeholders to maximize their marketing to consumers in certain regions.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+<a href="https://github.com/annieco29/rooftop_solar_energy_app">
+    <img src="front_end/brighter_potential_logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
-Use the `BLANK_README.md` to get started.
+LEVERAGING INDUSTRIAL BUILDINGS
+* Industrial buildings such as factories have some of the greatest rooftop solar potential due to the large surface area they provide for solar panels. 
+* Industrial sites could significantly help support Florida’s energy grid. 
+* By clicking the “View Industrial Locations,” checkbox the map will display the locations for industrial real estate sites larger than 750,000 sqft. 
+* By clicking on a given industrial site point in the app, a stakeholder can view the owner of the property, as well as the average daily solar production capacity as predicted by the regression model. 
+* This allows stakeholders to target industrial real estate sites for additional rooftop solar power capacity. 
+
+IDENTIFYING TIME PERIODS FOR SAVINGS POTENTIAL
+* The Solar Savings Potential tab allows a policy maker or stakeholder to view the solar capacity as compared to predicted energy demand by zip code and by custom time periods from 2019 by changing the fields in the side bar. 
+* The hierarchical sunburst chart allows stakeholders to view the different months of the year that have low amounts of solar production coverage so that they can plan for time periods where supplemental power sources are needed. 
+* Blue indicates high predicted solar energy coverage, and pink/red indicates low predicted solar energy coverage. 
+METHODOLOGY AND MODEL PERFORMANCE
+
+* The “Predictive Model Methodology” tab shows the predictive power of the xgboost model that predicts daily energy demand and the linear regression model that predicts solar energy production. 
+* The plots show how well the models performed on our test data sets, which are from from two different data sets listed in a future slide. 
+* We see that the machine learning models on the backend of the Brighter Potential application predict energy demand and solar production with low error.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -96,33 +110,43 @@ Use the `BLANK_README.md` to get started.
 
 ### Built With
 
-These are the major frameworks/libraries used for this project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+These are the major frameworks/libraries used for this project.
 
-* [Next.js](https://nextjs.org/)
-* [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Laravel](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
+* [python](https://python.org/)
+* [Streamlit](https://streamlit.io/)
+* [plotly](https://plotly.com/)
+
+Deployed on:
+
+* [IBM Cloud using Kubernetes](https://ibm.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
-<!-- GETTING STARTED -->
-## Getting Started
+<!-- How to see it -->
+## How to view the Brighter Potential dashboard
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+The 
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+This is a list of libraries you need to spin up the Streamlit dashboard and how to install them.
+* streamlit
   ```sh
-  npm install npm@latest -g
+  pip install streamlit
+  ```
+ * multiapp
+  ```sh
+  pip install multiapp
+  ```
+ * pandas
+  ```sh
+  pip install pandas
+  ```
+ * plotly
+  ```sh
+  pip install ploty
   ```
 
 ### Installation
@@ -132,7 +156,7 @@ _Below is an example of how you can instruct your audience on installing and set
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/annieco29/rooftop_solar_energy_app.git
    ```
 3. Install NPM packages
    ```sh
@@ -156,47 +180,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- LICENSE -->
 ## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -205,9 +190,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Annie Condon - Twitter:@downtoearthdata 
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/annieco29/rooftop_solar_energy_app](https://github.com/annieco29/rooftop_solar_energy_app)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -216,16 +201,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
