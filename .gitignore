@@ -1,0 +1,8 @@
+# exclude data from source control by default
+/notebooks/tampa_weather_data_2014-2018.nosync
+/notebooks/tampa_electric_co_demand_hourly.csv.nosync
+/notebooks/florida_weather_data_by_county_lat_long.csv.nosync
+/notebooks/florida_weather_w_predictions_and_zip_codes.csv.nosync
+/notebooks/florida_weather_w_zip_codes.csv.nosync
+/notebooks/all_florida_weather_data_demand_predicted_xgboost.csv.nosync
+/notebooks/all_florida_weather_data_demand_predicted.csv.nosync
