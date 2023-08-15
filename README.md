@@ -184,8 +184,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <!-- CONTACT -->
 ## Contact
-
-Annie Condon - Twitter:@downtoearthdata 
+ 
 
 Project Link: [https://github.com/annieco29/rooftop_solar_energy_app](https://github.com/annieco29/rooftop_solar_energy_app)
 
